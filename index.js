@@ -15,8 +15,14 @@ app.post('/events', async (req, res) => {
     const { type, data } = req.body;
 
     if (type === 'PostCreated') {
-        const { id, content } = data;
-        posts[id] = { id, content, comments: [] };
+        const { id, title } = data;
+        posts[id] = { id, title, comments: [] };
+    }
+    if (type === 'CommentCreated') {
+        const { id, content, postId } = data;
+
+        const post = posts[postId];
+        posts.comments.push({ id, content });
     }
 });
 
