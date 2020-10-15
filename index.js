@@ -8,11 +8,13 @@ const app = express();
 app.use(morgan('dev'));
 const posts = {};
 app.get('/posts', (req, res) => {
-
+    res.send(posts);
 });
 
 app.post('/events', async (req, res) => {
     const { type, data } = req.body;
+
+    console.log('req.body ===>', req.body);
 
     if (type === 'PostCreated') {
         const { id, title } = data;
@@ -22,8 +24,10 @@ app.post('/events', async (req, res) => {
         const { id, content, postId } = data;
 
         const post = posts[postId];
-        posts.comments.push({ id, content });
+        post.comments.push({ id, content });
     }
+
+    res.send({});
 });
 
 app.listen(4002, () => console.log("Server running on port 4002"));
